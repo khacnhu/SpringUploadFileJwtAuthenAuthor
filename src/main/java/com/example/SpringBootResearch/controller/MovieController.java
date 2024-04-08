@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.swing.*;
 import javax.swing.plaf.PanelUI;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -30,6 +31,10 @@ public class MovieController {
             @RequestPart MultipartFile file,
             @RequestPart String movieDto
     ) throws IOException {
+        if(file.isEmpty()) {
+            throw new FileNotFoundException("You should add file in request from client");
+        }
+
         MovieDto dto = convertToMovieDto(movieDto);
         return new ResponseEntity<>(movieService.addMovie(dto, file), HttpStatus.CREATED);
     }

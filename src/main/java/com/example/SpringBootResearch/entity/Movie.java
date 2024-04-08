@@ -32,8 +32,6 @@ public class Movie {
     @NotBlank(message = "PLEASE PROVIDE MOVIE'S STUDIO")
     private String studio;
 
-
-
     @ElementCollection
     @CollectionTable(name = "movie_cast")
     private Set<String> movieCast;
