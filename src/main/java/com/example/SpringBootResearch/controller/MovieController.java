@@ -1,7 +1,9 @@
 package com.example.SpringBootResearch.controller;
 
 import com.example.SpringBootResearch.dto.MovieDto;
+import com.example.SpringBootResearch.dto.MoviePageResponse;
 import com.example.SpringBootResearch.service.MovieService;
+import com.example.SpringBootResearch.utils.AppConstants;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
@@ -72,6 +74,27 @@ public class MovieController {
     @DeleteMapping("/delete/{movieId}")
     public ResponseEntity<String> deleteMovieHandler(@PathVariable Integer movieId) throws IOException {
         return ResponseEntity.ok(movieService.deleteMovie(movieId));
+    }
+
+
+    @GetMapping("/allMoviesPage")
+    public ResponseEntity<MoviePageResponse> getMovieWithPagination(
+            @RequestParam(defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
+            @RequestParam(defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize
+    ) {
+        return ResponseEntity.ok(movieService.getAllMoviesWithPagination(pageNumber, pageSize));
+    }
+
+    @GetMapping("/allMoviesPageSort")
+    public ResponseEntity<MoviePageResponse> getMovieWithPaginationSorting(
+            @RequestParam(defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
+            @RequestParam(defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
+            @RequestParam(defaultValue = AppConstants.SORT_BY, required = false) String sortBy,
+            @RequestParam(defaultValue = AppConstants.SORT_DIR, required = false) String dir
+    ) {
+        return ResponseEntity.ok(movieService.getAllMoviesWithPaginationAndSorting(
+                pageNumber, pageSize, sortBy, dir
+        ));
     }
 
 
